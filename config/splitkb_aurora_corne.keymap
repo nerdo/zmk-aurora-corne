@@ -11,11 +11,11 @@
 
 &caps_word { continue-list = <UNDERSCORE MINUS BACKSPACE DELETE>; };
 
-/ {
-    &led_strip {
-        chain-length = <24>;
-    };
+&led_strip {
+    chain-length = <24>;
+};
 
+/ {
     conditional_layers {
         compatible = "zmk,conditional-layers";
 
