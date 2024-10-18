@@ -1,3 +1,0 @@
-&nice_view_adapter {
-    cs-gpios = <&gpio0 19 GPIO_ACTIVE_LOW>;  // The unused pin on the aurora that I bodged a wire to CS
-};
