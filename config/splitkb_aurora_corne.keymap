@@ -13,7 +13,7 @@
 &led_strip { chain-length = <24>; };
 
 &nice_view_spi {
-    cs-gpios = <&gpio0 7 GPIO_ACTIVE_HIGH>;  // The unused pin on the aurora that I bodged a wire to CS
+    cs-gpios = <&gpio0 7 GPIO_ACTIVE_LOW>;  // The unused pin on the aurora that I bodged a wire to CS
 };
 
 &caps_word { continue-list = <UNDERSCORE MINUS BACKSPACE DELETE>; };
