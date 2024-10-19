@@ -10,13 +10,13 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/rgb.h>
 
-&caps_word { continue-list = <UNDERSCORE MINUS BACKSPACE DELETE>; };
-
 &led_strip { chain-length = <24>; };
 
 &nice_view_spi {
-    cs-gpios = <&gpio0 19 GPIO_ACTIVE_HIGH>;  // The unused pin on the aurora that I bodged a wire to CS
+    cs-gpios = <&gpio0 20 GPIO_ACTIVE_HIGH>;  // The unused pin on the aurora that I bodged a wire to CS
 };
+
+&caps_word { continue-list = <UNDERSCORE MINUS BACKSPACE DELETE>; };
 
 / {
     conditional_layers {
