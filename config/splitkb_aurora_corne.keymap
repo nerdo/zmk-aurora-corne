@@ -14,8 +14,8 @@
 
 &led_strip { chain-length = <24>; };
 
-&nice_view_adapter {
-    cs-gpios = <&gpio0 19 GPIO_ACTIVE_LOW>;  // The unused pin on the aurora that I bodged a wire to CS
+&nice_view_spi {
+    cs-gpios = <&gpio0 19 GPIO_ACTIVE_HIGH>;  // The unused pin on the aurora that I bodged a wire to CS
 };
 
 / {
