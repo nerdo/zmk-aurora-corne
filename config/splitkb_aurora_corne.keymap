@@ -12,8 +12,30 @@
 
 &led_strip { chain-length = <24>; };
 
+/*
 &nice_view_spi {
     cs-gpios = <&gpio0 30 GPIO_ACTIVE_LOW>; // Assigning CS to F5 (P0.30)
+};
+*/
+
+&spi1 {
+    compatible = "nordic,nrf-spi";
+    status = "okay";
+    sck-pin = <&gpio0 15>;  // Define your SCK pin
+    mosi-pin = <&gpio0 16>; // Define your MOSI pin
+    miso-pin = <&gpio0 17>; // Define your MISO pin
+    cs-gpios = <&gpio0 20 GPIO_ACTIVE_LOW>; // Define D20 as CS pin
+
+    nice_view_display: display@0 {
+        compatible = "ssd1306";
+        reg = <0>;
+        label = "SSD1306";
+        spi-max-frequency = <8000000>;
+        reset-gpios = <&gpio0 10 GPIO_ACTIVE_LOW>;
+        dc-gpios = <&gpio0 11 GPIO_ACTIVE_LOW>;
+        width = <128>;
+        height = <64>;
+    };
 };
 
 &caps_word { continue-list = <UNDERSCORE MINUS BACKSPACE DELETE>; };
