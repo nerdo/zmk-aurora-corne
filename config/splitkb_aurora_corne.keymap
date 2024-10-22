@@ -12,7 +12,7 @@
 
 &led_strip { chain-length = <24>; };
 
-&nice_view_adapter {
+&nice_view_spi {
     cs-gpios = <&gpio0 20 GPIO_ACTIVE_LOW>;
 };
 
