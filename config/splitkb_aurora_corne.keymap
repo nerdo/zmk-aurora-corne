@@ -13,7 +13,7 @@
 &led_strip { chain-length = <24>; };
 
 &nice_view_spi {
-    cs-gpios = <&pro_micro 7 GPIO_ACTIVE_HIGH>; // Assigning CS to D20
+    cs-gpios = <&pro_micro 19 GPIO_ACTIVE_HIGH>; // Assigning CS to D20
 };
 
 &caps_word { continue-list = <UNDERSCORE MINUS BACKSPACE DELETE>; };
