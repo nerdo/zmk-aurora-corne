@@ -12,6 +12,10 @@
 
 &led_strip { chain-length = <24>; };
 
+&nice_view_spi {
+    cs-gpios = <&gpio0 29 GPIO_ACTIVE_HIGH>; // Assigning CS to D20
+};
+
 &caps_word { continue-list = <UNDERSCORE MINUS BACKSPACE DELETE>; };
 
 / {
