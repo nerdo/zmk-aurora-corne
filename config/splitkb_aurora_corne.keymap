@@ -12,6 +12,10 @@
 
 &led_strip { chain-length = <24>; };
 
+&nice_view_spi {
+    cs-gpios = <&pro_micro 19 GPIO_ACTIVE_HIGH>; // Assigning CS to D20
+};
+
 &caps_word { continue-list = <UNDERSCORE MINUS BACKSPACE DELETE>; };
 
 / {
@@ -45,46 +49,6 @@
                 <&kp LC(LS(TAB))>,
                 <&macro_release>,
                 <&kp LC(LS(TAB))>;
-        };
-
-        helldivers_mission_reinforce: helldivers_mission_reinforce {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kt B &kp E &kp D &kp F &kp S &kp E &kt B>;
-            label = "HELLDIVERS_MISSION_REINFORCE";
-            wait-ms = <50>;
-        };
-
-        helldivers_mission_resupply: helldivers_mission_resupply {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kt B &kp D &kp D &kp E &kp F &kt B>;
-            label = "HELLDIVERS_MISSION_RESUPPLY";
-            wait-ms = <50>;
-        };
-
-        helldivers_precision_strike: helldivers_precision_strike {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kt B &kp F &kp F &kp E &kt B>;
-            label = "HELLDIVERS_PRECISION_STRIKE";
-            wait-ms = <50>;
-        };
-
-        helldivers_template: helldivers_template {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kt B &kt B>;
-            label = "HELLDIVERS_TEMPLATE";
-            wait-ms = <50>;
-        };
-
-        helldivers_supply_machine_gun: helldivers_supply_machine_gun {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kt B &kp D &kp S &kp D &kp E &kp F &kt B>;
-            label = "HELLDIVERS_SUPPLY_MACHINE_GUN";
-            wait-ms = <50>;
         };
     };
 
