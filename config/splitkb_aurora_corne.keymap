@@ -21,7 +21,7 @@
     conditional_layers {
         compatible = "zmk,conditional-layers";
 
-        system_layer {
+        f-key {
             if-layers = <5 2>;
             then-layer = <6>;
         };
@@ -268,10 +268,10 @@
         f-key {
             display-name = "f-key";
             bindings = <
-&none  &kp F1   &kp F2   &kp F3   &kp F4   &kp F5     &kp F6    &kp F7         &kp F8       &kp F9   &kp F10  &none
-&none  &none    &none    &none    &none    &none      &kp HOME  &kp PAGE_DOWN  &kp PAGE_UP  &kp END  &none    &none
-&none  &kp F11  &kp F12  &kp F13  &kp F14  &kp F15    &kp F16   &kp F17        &kp F18      &kp F19  &kp F20  &none
-                         &trans   &trans   &to 7      &tog 1    &trans         &to 8
+&none  &kp F1     &kp F2     &kp F3     &kp F4     &kp F5       &kp F6    &kp F7         &kp F8       &kp F9   &kp F10  &none
+&none  &bt_sel_1  &bt_sel_2  &bt_sel_3  &bt_sel_4  &bt_sel_5    &kp HOME  &kp PAGE_DOWN  &kp PAGE_UP  &kp END  &none    &none
+&none  &kp F11    &kp F12    &kp F13    &kp F14    &kp F15      &kp F16   &kp F17        &kp F18      &kp F19  &kp F20  &none
+                             &trans     &trans     &to 7        &tog 1    &trans         &to 8
             >;
         };
 
