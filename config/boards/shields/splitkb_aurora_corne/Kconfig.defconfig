@@ -31,22 +31,3 @@ config BT_BUF_ACL_TX_SIZE
 
 endif
 
-if SHIELD_SPLITKB_AURORA_CORNE_LEFT_PERIPHERAL
-
-config ZMK_KEYBOARD_NAME
-	default "Aurora Corne Left Peripheral"
-
-config ZMK_SPLIT
-	default y
-
-config ZMK_SPLIT_ROLE_CENTRAL
-	default n
-
-# Peripheral only connects to dongle
-config BT_MAX_CONN
-	default 1
-
-config BT_MAX_PAIRED
-	default 1
-
-endif

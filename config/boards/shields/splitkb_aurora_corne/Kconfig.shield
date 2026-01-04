@@ -3,7 +3,3 @@
 
 config SHIELD_SPLITKB_AURORA_CORNE_DONGLE_XIAO
 	def_bool $(shields_list_contains,splitkb_aurora_corne_dongle_xiao)
-
-config SHIELD_SPLITKB_AURORA_CORNE_LEFT_PERIPHERAL
-	def_bool $(shields_list_contains,splitkb_aurora_corne_left_peripheral)
-	select SHIELD_SPLITKB_AURORA_CORNE_LEFT

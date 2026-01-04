@@ -1,3 +1,11 @@
+/*
+ * This overlay is applied to builds using splitkb_aurora_corne shields
+ * It contains Pro Micro / nice!nano specific configurations
+ * Dongle builds should NOT include this - use shield-specific overlays instead
+ */
+
+#if !defined(CONFIG_SHIELD_SPLITKB_AURORA_CORNE_DONGLE_XIAO)
+
 // start https://github.com/zmkfirmware/zmk/blob/8ed556df6203d0d9dd438db2034006edf49b6547/app/boards/shields/nice_view_adapter/boards/nice_nano_v2.overlay
 &pinctrl {
     spi0_default: spi0_default {
@@ -28,4 +36,6 @@
 &pro_micro_i2c {
     status = "disabled";
 };
+
+#endif /* !CONFIG_SHIELD_SPLITKB_AURORA_CORNE_DONGLE_XIAO */
 // end https://github.com/zmkfirmware/zmk/blob/8ed556df6203d0d9dd438db2034006edf49b6547/app/boards/shields/nice_view_adapter/boards/nice_nano_v2.overlay

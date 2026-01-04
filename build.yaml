@@ -20,7 +20,8 @@ include:
 
   # Left half (peripheral - connects to dongle)
   - board: nice_nano@2.0.0
-    shield: splitkb_aurora_corne_left_peripheral nice_view_adapter nice_view
+    shield: splitkb_aurora_corne_left nice_view_adapter nice_view
+    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
 
   # Right half (peripheral - connects to dongle)
   - board: nice_nano@2.0.0

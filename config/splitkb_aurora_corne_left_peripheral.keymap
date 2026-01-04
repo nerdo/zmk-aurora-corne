@@ -1,9 +1,0 @@
-/*
- * Copyright (c) 2024 The ZMK Contributors
- * SPDX-License-Identifier: MIT
- *
- * Left half in peripheral mode for dongle setup
- * This file simply includes the standard keymap
- */
-
-#include "splitkb_aurora_corne.keymap"
