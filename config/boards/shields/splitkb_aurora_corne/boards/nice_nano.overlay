@@ -1,55 +1,8 @@
 /*
- * Copyright (c) 2024 The ZMK Contributors
- * SPDX-License-Identifier: MIT
+ * Board-specific overlay for nice!nano with custom Aurora Corne shields
+ * NOTE: This file only applies to custom shields in this directory (e.g. dongle),
+ * NOT to official splitkb_aurora_corne_left/right shields from ZMK.
+ * Since the dongle uses xiao_ble (not nice_nano), this file is currently unused.
  *
- * Board-specific configuration for RGB underglow on nice!nano
+ * The official Aurora Corne shields define led_strip; our keymap sets chain-length.
  */
-
-#include <dt-bindings/led/led.h>
-
-&pinctrl {
-	spi3_default: spi3_default {
-		group1 {
-			psels = <NRF_PSEL(SPIM_MOSI, 0, 6)>;
-		};
-	};
-
-	spi3_sleep: spi3_sleep {
-		group1 {
-			psels = <NRF_PSEL(SPIM_MOSI, 0, 6)>;
-			low-power-enable;
-		};
-	};
-};
-
-&spi3 {
-	compatible = "nordic,nrf-spim";
-	status = "okay";
-
-	pinctrl-0 = <&spi3_default>;
-	pinctrl-1 = <&spi3_sleep>;
-	pinctrl-names = "default", "sleep";
-
-	led_strip: ws2812@0 {
-		compatible = "worldsemi,ws2812-spi";
-		label = "WS2812";
-		reg = <0>;
-
-		/* SPI timing for WS2812 */
-		spi-max-frequency = <4000000>;
-
-		/* LED chain configuration - Aurora Corne uses 24 LEDs per half */
-		chain-length = <24>;
-		spi-one-frame = <0x70>;
-		spi-zero-frame = <0x40>;
-
-		/* RGB color mapping */
-		color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
-	};
-};
-
-/ {
-	chosen {
-		zmk,underglow = &led_strip;
-	};
-};

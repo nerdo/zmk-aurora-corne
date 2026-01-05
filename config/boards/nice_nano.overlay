@@ -1,5 +1,5 @@
 /*
- * Board-specific overlay for nice!nano v2 builds
+ * Board-specific overlay for nice!nano builds (matches nice_nano@2.0.0)
  * Applied to all nice_nano builds regardless of shield
  * This avoids conflicts with xiao_ble dongle builds
  */
