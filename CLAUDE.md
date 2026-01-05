@@ -90,6 +90,67 @@ A ZMK dongle needs:
 3. **Full keymap** - Same key bindings as keyboard halves (central processes the keymap!)
 4. **BLE central config** - `CONFIG_ZMK_SPLIT_ROLE_CENTRAL=y`
 5. **Peripheral count** - `CONFIG_ZMK_SPLIT_BLE_CENTRAL_PERIPHERALS=2` for split keyboard
+6. **Physical layouts in same order as peripherals** - See critical quirk #8 below!
+
+### 8. Physical Layout Index Synchronization (CRITICAL)
+
+**Problem**: Dongle mode causes -3 (or other) key position offset compared to standalone mode.
+
+**Root Cause**: ZMK's split protocol sends physical layout **indices** (array positions) from central to peripherals to synchronize layouts. Layout indices are determined by **include order** in devicetree, NOT by layout name.
+
+**How Layout Indices Are Assigned**:
+```c
+// In ZMK source: app/src/physical_layouts.c
+static const struct zmk_physical_layout *const layouts[] = {
+    DT_FOREACH_STATUS_OKAY(zmk_physical_layout, PHYS_LAYOUT_REF)
+};
+```
+The `DT_FOREACH_STATUS_OKAY` macro iterates layouts in devicetree include order.
+
+**Aurora Corne Layout Indices** (from `splitkb_aurora_corne.dtsi`):
+```c
+#include <layouts/foostan/corne/5column.dtsi>  // → index 0
+#include <layouts/foostan/corne/6column.dtsi>  // → index 1
+```
+
+**The Bug**: If the dongle only includes `6column.dtsi`:
+- Dongle: `foostan_corne_6col_layout` = index **0** (only layout)
+- Peripheral: `foostan_corne_6col_layout` = index **1**
+- Dongle sends "select layout 0" → Peripheral selects `layouts[0]` = **5-column**!
+- 5-column transform causes -3 position offset
+
+**The Fix**: Dongle MUST include layouts in the SAME ORDER as the keyboard shields:
+```c
+/* In corne_dongle.overlay */
+#include <layouts/foostan/corne/5column.dtsi>  // → index 0
+#include <layouts/foostan/corne/6column.dtsi>  // → index 1
+
+/ {
+    chosen {
+        zmk,physical-layout = &foostan_corne_6col_layout;  // selects index 1
+    };
+};
+
+&foostan_corne_5col_layout {
+    transform = <&five_column_transform>;
+};
+
+&foostan_corne_6col_layout {
+    transform = <&default_transform>;
+};
+```
+
+**Verification**: After flashing new dongle firmware, do a **settings reset on all devices** to clear any saved layout state.
+
+**ZMK Source Reference** (central.c):
+```c
+static void update_peripherals_selected_physical_layout(struct k_work *_work) {
+    uint8_t layout_idx = zmk_physical_layouts_get_selected();  // Returns array index
+    for (int i = 0; i < ZMK_SPLIT_BLE_PERIPHERAL_COUNT; i++) {
+        update_peripheral_selected_layout(&peripherals[i], layout_idx);
+    }
+}
+```
 
 ## Current Architecture
 
@@ -146,3 +207,5 @@ Look for these lines in build output:
 | `Need a matrix transform` | Dongle missing transform | Add matrix transform to dongle overlay |
 | Keys not registering | Dongle keymap has `&none` | Dongle needs full keymap (central processes it!) |
 | Only one half connects | `ZMK_SPLIT_BLE_CENTRAL_PERIPHERALS` not set | Set to 2 in dongle Kconfig.defconfig |
+| -3 position offset in dongle mode | Physical layout index mismatch | Include layouts in SAME ORDER as keyboard shield (see quirk #8) |
+| Wrong keys register in dongle mode | Peripheral using wrong transform | Check layout include order matches between dongle and peripherals |

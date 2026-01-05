@@ -5,14 +5,27 @@
  * XIAO BLE dongle for Aurora Corne keyboard
  * Named 'corne_dongle' (not 'splitkb_aurora_corne_*') to avoid prefix matching
  * with keyboard half config files. See CLAUDE.md for details.
+ *
+ * CRITICAL: The dongle MUST include the same physical layouts as the keyboard
+ * halves, IN THE SAME ORDER. The central sends its selected layout index to
+ * peripherals via GATT. Layout indices are array indices based on include order:
+ *   - Index 0: 5-column (foostan_corne_5col_layout)
+ *   - Index 1: 6-column (foostan_corne_6col_layout)
+ *
+ * If the dongle only includes 6column.dtsi, its index 0 is 6-column. But on
+ * Aurora Corne peripherals, index 0 is 5-column! When dongle sends "0", the
+ * peripheral incorrectly selects 5-column layout, causing -3 position offset.
  */
 
 #include <dt-bindings/zmk/matrix_transform.h>
+/* MUST match Aurora Corne include order for correct layout index synchronization */
+#include <layouts/foostan/corne/5column.dtsi>
+#include <layouts/foostan/corne/6column.dtsi>
 
 / {
 	chosen {
 		zmk,kscan = &kscan0;
-		zmk,matrix-transform = &default_transform;
+		zmk,physical-layout = &foostan_corne_6col_layout;
 	};
 
 	/* Matrix transform matching Aurora Corne 6-column layout (42 keys) */
@@ -28,6 +41,19 @@
 		>;
 	};
 
+	/* Matrix transform matching Aurora Corne 5-column layout (36 keys) */
+	five_column_transform: keymap_transform_1 {
+		compatible = "zmk,matrix-transform";
+		columns = <10>;
+		rows = <4>;
+		map = <
+			RC(0,1) RC(0,2) RC(0,3) RC(0,4) RC(0,5)  RC(0,6) RC(0,7) RC(0,8) RC(0,9) RC(0,10)
+			RC(1,1) RC(1,2) RC(1,3) RC(1,4) RC(1,5)  RC(1,6) RC(1,7) RC(1,8) RC(1,9) RC(1,10)
+			RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5)  RC(2,6) RC(2,7) RC(2,8) RC(2,9) RC(2,10)
+			                RC(3,3) RC(3,4) RC(3,5)  RC(3,6) RC(3,7) RC(3,8)
+		>;
+	};
+
 	/* Minimal kscan for dongle - no physical keys, just needs structure for ZMK */
 	kscan0: kscan_0 {
 		compatible = "zmk,kscan-mock";
@@ -35,6 +61,15 @@
 		rows = <0>;
 		events = <0>;
 	};
+};
+
+/* Link physical layouts to transforms - MUST match Aurora Corne configuration */
+&foostan_corne_5col_layout {
+	transform = <&five_column_transform>;
+};
+
+&foostan_corne_6col_layout {
+	transform = <&default_transform>;
 };
 
 /* Disable NFC for Zephyr 4.1+ compatibility with XIAO BLE */
