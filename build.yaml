@@ -22,8 +22,9 @@ include:
   - board: nice_nano@2.0.0
     shield: splitkb_aurora_corne_left nice_view_adapter nice_view
     cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
+    artifact-name: splitkb_aurora_corne_left_peripheral-nice_nano
 
-  # Right half (peripheral - connects to dongle)
+  # Right half (peripheral - connects to both dongle and USB modes)
   - board: nice_nano@2.0.0
     shield: splitkb_aurora_corne_right nice_view_adapter nice_view
 
@@ -31,9 +32,7 @@ include:
   # Left half (central - connects to right half + computer via USB)
   - board: nice_nano@2.0.0
     shield: splitkb_aurora_corne_left nice_view_adapter nice_view
-
-  # Right half (peripheral - connects to left half) - same firmware as dongle mode
-  # No need to rebuild - use the firmware from dongle mode section above
+    artifact-name: splitkb_aurora_corne_left_central-nice_nano
 
   # === SETTINGS RESET ===
   - board: xiao_ble
