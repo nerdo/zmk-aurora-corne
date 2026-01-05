@@ -1,0 +1,26 @@
+/*
+ * Copyright (c) 2024 The ZMK Contributors
+ * SPDX-License-Identifier: MIT
+ *
+ * Dongle keymap - minimal keymap for wireless central receiver
+ * NOTE: Do NOT add &led_strip or &nice_view_spi refs here - dongle doesn't have these
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+
+/ {
+	keymap {
+		compatible = "zmk,keymap";
+
+		/* Dongle has no physical keys - empty keymap required for build */
+		default_layer {
+			bindings = <
+				&none &none &none &none &none &none   &none &none &none &none &none &none
+				&none &none &none &none &none &none   &none &none &none &none &none &none
+				&none &none &none &none &none &none   &none &none &none &none &none &none
+				                  &none &none &none   &none &none &none
+			>;
+		};
+	};
+};

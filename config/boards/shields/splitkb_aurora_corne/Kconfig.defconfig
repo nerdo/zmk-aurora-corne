@@ -1,0 +1,29 @@
+# Copyright (c) 2024 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+if SHIELD_SPLITKB_AURORA_CORNE_DONGLE_XIAO
+
+config ZMK_KEYBOARD_NAME
+	default "Aurora Corne Dongle"
+
+config ZMK_SPLIT
+	default y
+
+config ZMK_SPLIT_ROLE_CENTRAL
+	default y
+
+# Central connects to both halves
+config BT_MAX_CONN
+	default 5
+
+config BT_MAX_PAIRED
+	default 5
+
+# Larger ACL buffer for split communication
+config BT_BUF_ACL_RX_SIZE
+	default 255
+
+config BT_BUF_ACL_TX_SIZE
+	default 255
+
+endif

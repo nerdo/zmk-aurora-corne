@@ -9,11 +9,11 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/rgb.h>
 
-&led_strip { chain-length = <24>; };
-
-&nice_view_spi {
-    cs-gpios = <&gpio0 29 GPIO_ACTIVE_HIGH>; // Assigning CS to D20
-};
+/* NOTE: &led_strip and &nice_view_spi are in config/boards/nice_nano.overlay
+ * They cannot be here because this keymap is applied to ALL shields via prefix
+ * matching, including the dongle which doesn't have these nodes.
+ * See CLAUDE.md for details.
+ */
 
 &caps_word { continue-list = <UNDERSCORE MINUS BACKSPACE DELETE>; };
 

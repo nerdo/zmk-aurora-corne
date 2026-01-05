@@ -13,7 +13,18 @@
 #
 ---
 include:
+  # === KEYBOARD HALVES ===
   - board: nice_nano@2.0.0
     shield: splitkb_aurora_corne_left nice_view_adapter nice_view
   - board: nice_nano@2.0.0
     shield: splitkb_aurora_corne_right nice_view_adapter nice_view
+
+  # === XIAO BLE DONGLE ===
+  - board: xiao_ble
+    shield: splitkb_aurora_corne_dongle_xiao
+
+  # === SETTINGS RESET ===
+  - board: xiao_ble
+    shield: settings_reset
+  - board: nice_nano@2.0.0
+    shield: settings_reset
