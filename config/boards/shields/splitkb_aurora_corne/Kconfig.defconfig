@@ -1,7 +1,7 @@
 # Copyright (c) 2024 The ZMK Contributors
 # SPDX-License-Identifier: MIT
 
-if SHIELD_AURORA_CORNE_DONGLE_XIAO
+if SHIELD_SPLITKB_AURORA_CORNE_DONGLE_XIAO
 
 config ZMK_KEYBOARD_NAME
 	default "Aurora Corne Dongle"
