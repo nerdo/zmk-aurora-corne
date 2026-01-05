@@ -29,3 +29,22 @@
     status = "disabled";
 };
 // end https://github.com/zmkfirmware/zmk/blob/8ed556df6203d0d9dd438db2034006edf49b6547/app/boards/shields/nice_view_adapter/boards/nice_nano_v2.overlay
+
+// Device-specific configuration (not applicable to dongle)
+&led_strip { chain-length = <24>; };
+
+&nice_view_spi {
+    cs-gpios = <&gpio0 29 GPIO_ACTIVE_HIGH>; // Assigning CS to D20
+};
+
+/*
+ * FORCE 6-column layout explicitly.
+ * The Corne Mini has outer columns physically removed, but we still use
+ * the 6-column layout with &none for those positions. This ensures the
+ * correct matrix transform is used for position calculations.
+ */
+/ {
+    chosen {
+        zmk,physical-layout = &foostan_corne_6col_layout;
+    };
+};

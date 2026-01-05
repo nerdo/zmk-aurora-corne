@@ -2,9 +2,6 @@
  * Copyright (c) 2020 The ZMK Contributors
  *
  * SPDX-License-Identifier: MIT
- *
- * Keymap for XIAO BLE dongle (central receiver).
- * Complete standalone keymap - must match keyboard halves exactly.
  */
 
 #include <behaviors.dtsi>
