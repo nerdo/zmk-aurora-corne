@@ -16,7 +16,7 @@ include:
   # === DONGLE MODE (use with XIAO BLE dongle) ===
   # Dongle (XIAO BLE as central - connects to both halves + computer via USB)
   - board: xiao_ble
-    shield: splitkb_aurora_corne_dongle_xiao
+    shield: aurora_corne_dongle_xiao
 
   # Left half (peripheral - connects to dongle)
   - board: nice_nano@2.0.0
