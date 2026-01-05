@@ -2,8 +2,9 @@
  * Copyright (c) 2024 The ZMK Contributors
  * SPDX-License-Identifier: MIT
  *
- * Dongle has no physical keys - it only routes wireless from peripherals to USB
- * But it still needs a matrix transform to match the keyboard layout for the keymap
+ * XIAO BLE dongle for Aurora Corne keyboard
+ * Named 'corne_dongle' (not 'splitkb_aurora_corne_*') to avoid prefix matching
+ * with keyboard half config files. See CLAUDE.md for details.
  */
 
 #include <dt-bindings/zmk/matrix_transform.h>

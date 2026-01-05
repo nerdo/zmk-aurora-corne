@@ -13,15 +13,24 @@
 #
 ---
 include:
-  # === KEYBOARD HALVES ===
+  # === KEYBOARD HALVES (STANDALONE MODE) ===
+  # Left half acts as central, connects directly to host
   - board: nice_nano@2.0.0
     shield: splitkb_aurora_corne_left nice_view_adapter nice_view
   - board: nice_nano@2.0.0
     shield: splitkb_aurora_corne_right nice_view_adapter nice_view
 
+  # === KEYBOARD HALVES (DONGLE MODE) ===
+  # Both halves are peripherals, connecting to the dongle
+  - board: nice_nano@2.0.0
+    shield: splitkb_aurora_corne_left nice_view_adapter nice_view
+    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
+    artifact-name: splitkb_aurora_corne_left_peripheral-nice_nano
+
   # === XIAO BLE DONGLE ===
+  # Named 'corne_dongle' to avoid prefix matching with keyboard config files
   - board: xiao_ble
-    shield: splitkb_aurora_corne_dongle_xiao
+    shield: corne_dongle
 
   # === SETTINGS RESET ===
   - board: xiao_ble
