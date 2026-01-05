@@ -13,42 +13,65 @@
 
 **Impact**: If the overlay/keymap references nodes that don't exist on all boards (e.g., `&pro_micro_i2c`, `&led_strip`, `&nice_view_spi`), builds for boards without those nodes will fail.
 
-**Solution**: Use board-specific overlays (`config/boards/<board>.overlay`) for hardware-specific configuration. These only apply to builds using that specific board.
+**Solution**: Name the dongle shield so it does NOT start with the same prefix as the keyboard shields. For example, use `corne_dongle` instead of `splitkb_aurora_corne_dongle_xiao`.
 
-### 2. Board Overlay Filename Must Match Board Identifier
+### 2. User Board Overlays Don't Exist
 
-**Problem**: The board overlay filename must match the board identifier used in `build.yaml`.
+**Problem**: `config/boards/<board>.overlay` is NOT a valid location for user configuration!
+
+**What ZMK Actually Looks For**:
+- `config/<shield>.overlay` - Applied based on shield name (with prefix matching)
+- `config/<shield>.keymap` - Applied based on shield name (with prefix matching)
+- `config/<shield>.conf` - Applied based on shield name (with prefix matching)
+
+**What ZMK Does NOT Look For**:
+- `config/boards/<board>.overlay` - This is IGNORED!
+
+**Solution**: All user overlay configuration must go in shield-named files.
+
+### 3. Dongle Keymap Must Have Full Key Bindings
+
+**Problem**: In ZMK split architecture, the central (dongle) applies the keymap to translate key positions to keycodes. If the dongle keymap has `&none` for all keys, no keys will register!
+
+**How It Works**:
+1. Peripherals (keyboard halves) send raw key **positions** to the central
+2. Central (dongle) applies its **keymap** to translate positions to keycodes
+3. Central sends keycodes to the host computer
+
+**Impact**: A dongle with all `&none` bindings will connect but keys won't work.
+
+**Solution**: Use a shared base keymap file:
+- `splitkb_aurora_corne_base.dtsi` - All behaviors, macros, combos, and keymap bindings
+- `splitkb_aurora_corne.keymap` - Includes base + device refs (`&led_strip`, `&nice_view_spi`)
+- `corne_dongle.keymap` - Includes just the base (no device refs)
+
+### 4. BLE Device Name Max Length
+
+**Problem**: `CONFIG_ZMK_KEYBOARD_NAME` has a maximum length of 16 characters.
+
+**Error**: `static assertion failed: "ERROR: BLE device name is too long. Max length: 16"`
 
 **Example**:
-- Board in build.yaml: `nice_nano@2.0.0`
-- Correct overlay: `config/boards/nice_nano.overlay`
-- WRONG: `config/boards/nice_nano_v2.overlay` (won't be loaded!)
+- "Aurora Corne Dongle" (19 chars) - TOO LONG
+- "Corne Dongle" (12 chars) - OK
 
-**Impact**: If filename doesn't match, the overlay is silently ignored and hardware won't be configured.
+### 5. Dongle Central Peripheral Count
 
-### 3. User Config Board Overlays Load AFTER Shields
+**Problem**: Default dongle only accepts 1 peripheral connection.
 
-**Correct Loading Order**:
-1. Board DTS
-2. ZMK board overlays
-3. Shield overlays (defines nodes like `&led_strip`, `&nice_view_spi`)
-4. User config overlays (`config/boards/*.overlay`, `config/<shield>.overlay`)
-5. Keymap (last)
+**Solution**: Set in dongle's Kconfig.defconfig:
+```kconfig
+config ZMK_SPLIT_BLE_CENTRAL_PERIPHERALS
+    default 2
 
-**Impact**: You CAN reference shield-defined nodes in `config/boards/<board>.overlay` because shields load first.
+config BT_MAX_CONN
+    default 7  # 2 peripherals + 5 BT profiles
 
-### 4. Dongle-Specific Files May Not Override Prefix Matches
-
-**Problem**: Even if `config/splitkb_aurora_corne_dongle_xiao.keymap` exists, ZMK may still use `config/splitkb_aurora_corne.keymap` via prefix matching.
-
-**Observed Behavior**: The build log shows which keymap is used:
-```
--- Using keymap file: .../config/splitkb_aurora_corne.keymap
+config BT_MAX_PAIRED
+    default 7
 ```
 
-**Solution**: Don't rely on shield-specific files overriding prefix matches. Instead, ensure prefix-matched files don't contain board-specific references.
-
-### 5. Nodes That Don't Exist on All Boards
+### 6. Nodes That Don't Exist on All Boards
 
 These nodes are board/shield specific and will cause build failures if referenced for the wrong board:
 
@@ -59,35 +82,47 @@ These nodes are board/shield specific and will cause build failures if reference
 | `&nice_view_spi` | nice_view shield | Dongle (no display) |
 | `&pro_micro` | nice_nano | xiao_ble |
 
-### 6. Dongle Requirements
+### 7. Dongle Requirements
 
 A ZMK dongle needs:
 1. **Matrix transform** - Must match the keyboard layout even though dongle has no keys
 2. **Mock kscan** - Use `zmk,kscan-mock` with 0 columns/rows/events
-3. **Separate keymap** - Minimal keymap with `&none` bindings, NO device refs
+3. **Full keymap** - Same key bindings as keyboard halves (central processes the keymap!)
 4. **BLE central config** - `CONFIG_ZMK_SPLIT_ROLE_CENTRAL=y`
+5. **Peripheral count** - `CONFIG_ZMK_SPLIT_BLE_CENTRAL_PERIPHERALS=2` for split keyboard
 
 ## Current Architecture
 
 ### File Structure
 ```
 config/
-├── boards/
-│   └── nice_nano.overlay          # nice_nano-specific hardware (SPI0, nice_view, LEDs)
-├── boards/shields/splitkb_aurora_corne/
+├── boards/shields/corne_dongle/
 │   ├── Kconfig.shield             # Dongle shield declaration
 │   ├── Kconfig.defconfig          # Dongle BLE central config
-│   └── splitkb_aurora_corne_dongle_xiao.overlay  # Dongle matrix/kscan
-├── splitkb_aurora_corne.keymap    # Main keymap (NO device refs!)
-├── splitkb_aurora_corne.conf      # Main config
-├── splitkb_aurora_corne_dongle_xiao.keymap  # Dongle keymap (minimal)
-└── splitkb_aurora_corne_dongle_xiao.conf    # Dongle config
+│   └── corne_dongle.overlay       # Dongle matrix/kscan
+├── splitkb_aurora_corne.overlay   # nice_nano-specific hardware (SPI0, I2C)
+├── splitkb_aurora_corne.keymap    # Keyboard halves keymap (includes base + device refs)
+├── splitkb_aurora_corne.conf      # Keyboard halves config
+├── splitkb_aurora_corne_base.dtsi # SHARED keymap (behaviors, macros, keymap bindings)
+├── corne_dongle.keymap            # Dongle keymap (includes base only)
+└── corne_dongle.conf              # Dongle config
+```
+
+### Keymap Structure (Single Source of Truth)
+```
+splitkb_aurora_corne_base.dtsi     <- Edit this file for keymap changes
+        ↑                ↑
+        |                |
+splitkb_aurora_corne.keymap    corne_dongle.keymap
+(adds &led_strip,              (no device refs)
+ &nice_view_spi)
 ```
 
 ### Build Targets
-- `nice_nano@2.0.0` + `splitkb_aurora_corne_left` - Left keyboard half
+- `nice_nano@2.0.0` + `splitkb_aurora_corne_left` - Left keyboard half (standalone central)
 - `nice_nano@2.0.0` + `splitkb_aurora_corne_right` - Right keyboard half
-- `xiao_ble` + `splitkb_aurora_corne_dongle_xiao` - Wireless dongle
+- `nice_nano@2.0.0` + `splitkb_aurora_corne_left` + cmake-args - Left peripheral (for dongle mode)
+- `xiao_ble` + `corne_dongle` - Wireless dongle (central)
 - `nice_nano@2.0.0` + `settings_reset` - Reset nice_nano settings
 - `xiao_ble` + `settings_reset` - Reset xiao_ble settings
 
@@ -105,7 +140,9 @@ Look for these lines in build output:
 
 | Error | Cause | Fix |
 |-------|-------|-----|
-| `undefined node label 'pro_micro_i2c'` | Overlay applied to xiao_ble | Move to `config/boards/nice_nano.overlay` |
-| `undefined node label 'led_strip'` | Keymap applied to dongle | Remove from keymap, put in board overlay |
-| `undefined node label 'nice_view_spi'` | Keymap applied to dongle | Remove from keymap, put in board overlay |
+| `undefined node label 'pro_micro_i2c'` | Overlay applied to xiao_ble | Use shield-named overlay, rename dongle to avoid prefix match |
+| `undefined node label 'led_strip'` | Keymap applied to dongle | Use shared base keymap without device refs |
+| `undefined node label 'nice_view_spi'` | Keymap applied to dongle | Use shared base keymap without device refs |
 | `Need a matrix transform` | Dongle missing transform | Add matrix transform to dongle overlay |
+| Keys not registering | Dongle keymap has `&none` | Dongle needs full keymap (central processes it!) |
+| Only one half connects | `ZMK_SPLIT_BLE_CENTRAL_PERIPHERALS` not set | Set to 2 in dongle Kconfig.defconfig |
