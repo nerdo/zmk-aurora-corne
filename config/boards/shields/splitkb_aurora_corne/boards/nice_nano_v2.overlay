@@ -34,3 +34,8 @@
 	status = "disabled";
 };
 // end https://github.com/zmkfirmware/zmk/blob/8ed556df6203d0d9dd438db2034006edf49b6547/app/boards/shields/nice_view_adapter/boards/nice_nano_v2.overlay
+
+/* nice!view display CS pin assignment for Aurora Corne */
+&nice_view_spi {
+	cs-gpios = <&gpio0 29 GPIO_ACTIVE_HIGH>; // Assigning CS to D20
+};

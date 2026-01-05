@@ -38,8 +38,8 @@
 		/* SPI timing for WS2812 */
 		spi-max-frequency = <4000000>;
 
-		/* LED chain configuration */
-		chain-length = <27>; /* Corne has 27 LEDs per half */
+		/* LED chain configuration - Aurora Corne uses 24 LEDs per half */
+		chain-length = <24>;
 		spi-one-frame = <0x70>;
 		spi-zero-frame = <0x40>;
 
