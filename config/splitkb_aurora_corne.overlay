@@ -1,11 +1,4 @@
-/*
- * Board-specific overlay for nice!nano builds (matches nice_nano@2.0.0)
- * Applied to all nice_nano builds regardless of shield
- * This avoids conflicts with xiao_ble dongle builds
- */
-
-// SPI0 configuration for nice_view display
-// From: https://github.com/zmkfirmware/zmk/blob/main/app/boards/shields/nice_view_adapter/boards/nice_nano_v2.overlay
+// start https://github.com/zmkfirmware/zmk/blob/8ed556df6203d0d9dd438db2034006edf49b6547/app/boards/shields/nice_view_adapter/boards/nice_nano_v2.overlay
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
@@ -35,11 +28,4 @@
 &pro_micro_i2c {
     status = "disabled";
 };
-
-/* RGB LED strip configuration for Aurora Corne */
-&led_strip { chain-length = <24>; };
-
-/* nice!view display CS pin assignment */
-&nice_view_spi {
-    cs-gpios = <&gpio0 29 GPIO_ACTIVE_HIGH>; // Assigning CS to D20
-};
+// end https://github.com/zmkfirmware/zmk/blob/8ed556df6203d0d9dd438db2034006edf49b6547/app/boards/shields/nice_view_adapter/boards/nice_nano_v2.overlay

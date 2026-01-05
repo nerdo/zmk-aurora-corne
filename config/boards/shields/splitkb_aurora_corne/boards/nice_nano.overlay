@@ -1,8 +1,0 @@
-/*
- * Board-specific overlay for nice!nano with custom Aurora Corne shields
- * NOTE: This file only applies to custom shields in this directory (e.g. dongle),
- * NOT to official splitkb_aurora_corne_left/right shields from ZMK.
- * Since the dongle uses xiao_ble (not nice_nano), this file is currently unused.
- *
- * The official Aurora Corne shields define led_strip; our keymap sets chain-length.
- */
