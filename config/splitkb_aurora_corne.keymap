@@ -209,7 +209,7 @@
             label = "alpha";
         };
 
-        Game-ESDF {
+        Game-EDSF {
             display-name = "game (ESDF)";
             bindings = <
 &none  &kp Q  &kp E  &kp W   &kp R   &kp T     &kp Y   &kp U   &kp I      &kp O    &kp P                         &none
