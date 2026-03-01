@@ -180,12 +180,14 @@ splitkb_aurora_corne.keymap    corne_dongle.keymap
 ```
 
 ### Build Targets
-- `nice_nano@2.0.0` + `splitkb_aurora_corne_left` - Left keyboard half (standalone central)
-- `nice_nano@2.0.0` + `splitkb_aurora_corne_right` - Right keyboard half
-- `nice_nano@2.0.0` + `splitkb_aurora_corne_left` + cmake-args - Left peripheral (for dongle mode)
-- `xiao_ble` + `corne_dongle` - Wireless dongle (central)
-- `nice_nano@2.0.0` + `settings_reset` - Reset nice_nano settings
-- `xiao_ble` + `settings_reset` - Reset xiao_ble settings
+- `nice_nano//zmk` + `splitkb_aurora_corne_left` - Left keyboard half (standalone central)
+- `nice_nano//zmk` + `splitkb_aurora_corne_right` - Right keyboard half
+- `nice_nano//zmk` + `splitkb_aurora_corne_left` + cmake-args - Left peripheral (for dongle mode)
+- `xiao_ble//zmk` + `corne_dongle` - Wireless dongle (central)
+- `nice_nano//zmk` + `settings_reset` - Reset nice_nano settings
+- `xiao_ble//zmk` + `settings_reset` - Reset xiao_ble settings
+
+**Note**: The `//zmk` qualifier is required since ZMK's migration to Zephyr v4.1 HWMv2 board system (PR #3145, 2026-02-12). `nice_nano//zmk` is shorthand for `nice_nano@2.0.0//zmk` (2.0.0 is the default revision). Without `//zmk`, the base board is selected which lacks ZMK-specific SPI/display/battery configuration.
 
 ## Debugging Tips
 
