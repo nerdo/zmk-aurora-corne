@@ -272,10 +272,10 @@
         numbers {
             display-name = "numbers";
             bindings = <
-&none  &kp N1        &kp N2        &kp N3     &kp N4   &kp N5       &kp N6         &kp N7            &kp N8             &kp N9     &kp N0     &none
-&none  &kp ESC       &kp LEFT_ALT  &kp LCTRL  &kp TAB  &kp ENTER    &kp BACKSLASH  &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp MINUS  &kp EQUAL  &none
-&none  &kp NUMBER_6  &kp N7        &kp N8     &kp N9   &kp N0       &kp DELETE     &kp LEFT_BRACE    &kp RIGHT_BRACE    &kp UNDER  &kp PLUS   &none
-                                   &trans     &trans   &none        &none          &trans            &trans
+&none  &kp N1        &kp N2         &kp N3      &kp N4   &kp N5       &kp N6         &kp N7            &kp N8             &kp N9     &kp N0     &none
+&none  &kp ESC       &kp BACKSPACE  &kp PERIOD  &kp TAB  &kp ENTER    &kp BACKSLASH  &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp MINUS  &kp EQUAL  &none
+&none  &kp NUMBER_6  &kp N7         &kp N8      &kp N9   &kp N0       &kp DELETE     &kp LEFT_BRACE    &kp RIGHT_BRACE    &kp UNDER  &kp PLUS   &none
+                                    &trans      &trans   &none        &none          &trans            &trans
             >;
         };
 
