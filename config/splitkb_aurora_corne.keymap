@@ -183,23 +183,11 @@
 
         left_globe {
             bindings = <&kp GLOBE>;
-            key-positions = <36 37>;
-            layers = <0>;
+            key-positions = <37 38>;
         };
 
         right_globe {
             bindings = <&kp GLOBE>;
-            key-positions = <40 41>;
-            layers = <0>;
-        };
-
-        left_ctrl {
-            bindings = <&kp LEFT_CONTROL>;
-            key-positions = <37 38>;
-        };
-
-        right_ctrl {
-            bindings = <&kp RIGHT_CONTROL>;
             key-positions = <39 40>;
         };
     };
