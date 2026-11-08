@@ -11,13 +11,14 @@
 #   - board: nice_nano_v2
 #     shield: reviung41
 #
-# nice!nano targets use the nrf52840-nosd snippet, so ZMK still boots after
-# RMK has been flashed. RMK overwrites the SoftDevice that the Adafruit
+# nice!nano and XIAO BLE targets use the nrf52840-nosd snippet, so ZMK still
+# boots after RMK has been flashed. Both boards run the Adafruit nRF52
+# bootloader. RMK overwrites the SoftDevice that the Adafruit
 # bootloader ships with. Without a SoftDevice the bootloader starts the app at
 # 0x1000, but a default ZMK build starts at 0x26000, so only a nosd build boots.
 # A nosd build also boots on a board that still has its SoftDevice, because the
-# UF2 overwrites it. So every nice!nano build stays nosd from now on, until the
-# bootloader is re-flashed together with its SoftDevice.
+# UF2 overwrites it. So every nice!nano and XIAO build stays nosd from now on,
+# until the bootloader is re-flashed together with its SoftDevice.
 # The settings partition moves as well: flash settings_reset first, then re-pair.
 #
 ---
@@ -42,10 +43,12 @@ include:
   # === XIAO BLE DONGLE ===
   # Named 'corne_dongle' to avoid prefix matching with keyboard config files
   - board: xiao_ble//zmk
+    snippet: nrf52840-nosd
     shield: corne_dongle
 
   # === SETTINGS RESET ===
   - board: xiao_ble//zmk
+    snippet: nrf52840-nosd
     shield: settings_reset
   - board: nice_nano//zmk
     snippet: nrf52840-nosd
