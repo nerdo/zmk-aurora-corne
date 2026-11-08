@@ -11,18 +11,30 @@
 #   - board: nice_nano_v2
 #     shield: reviung41
 #
+# nice!nano targets use the nrf52840-nosd snippet, so ZMK still boots after
+# RMK has been flashed. RMK overwrites the SoftDevice that the Adafruit
+# bootloader ships with. Without a SoftDevice the bootloader starts the app at
+# 0x1000, but a default ZMK build starts at 0x26000, so only a nosd build boots.
+# A nosd build also boots on a board that still has its SoftDevice, because the
+# UF2 overwrites it. So every nice!nano build stays nosd from now on, until the
+# bootloader is re-flashed together with its SoftDevice.
+# The settings partition moves as well: flash settings_reset first, then re-pair.
+#
 ---
 include:
   # === KEYBOARD HALVES (STANDALONE MODE) ===
   # Left half acts as central, connects directly to host
   - board: nice_nano//zmk
+    snippet: nrf52840-nosd
     shield: splitkb_aurora_corne_left nice_view_adapter nice_view
   - board: nice_nano//zmk
+    snippet: nrf52840-nosd
     shield: splitkb_aurora_corne_right nice_view_adapter nice_view
 
   # === KEYBOARD HALVES (DONGLE MODE) ===
   # Both halves are peripherals, connecting to the dongle
   - board: nice_nano//zmk
+    snippet: nrf52840-nosd
     shield: splitkb_aurora_corne_left nice_view_adapter nice_view
     cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
     artifact-name: splitkb_aurora_corne_left_peripheral-nice_nano
@@ -36,4 +48,5 @@ include:
   - board: xiao_ble//zmk
     shield: settings_reset
   - board: nice_nano//zmk
+    snippet: nrf52840-nosd
     shield: settings_reset
